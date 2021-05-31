@@ -1,17 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import Header from './Components/Header/Header';
+import Shopping from './Components/Shopping/Shopping';
+import { init_shop } from './Actions/shop-actions';
 
-function App() {
+const App = () => {
+    const dispatch = useDispatch();
+    const status = useSelector((state) => state.shopReducer.status);
+
+    useEffect(() => {
+        dispatch(init_shop());
+    }, []);
+
     return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-            </header>
-        </div>
+        <>
+            <Header />
+            {status === 'SUCCESS' && <Shopping />}
+            {status === 'LOADING' && <div>Loading</div>}
+        </>
     );
-}
+};
 
 export default App;
